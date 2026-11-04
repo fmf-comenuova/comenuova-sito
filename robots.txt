@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.comenuova.com/sitemap.xml

@@ -1,0 +1,34 @@
+{
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  "name": "Come Nuova S.r.l.",
+  "url": "https://www.comenuova.com",
+  "telephone": "+39 339 6290314",
+  "email": "fmf@comenuova.com",
+  "vatID": "IT13782820966",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Piazza della Repubblica 28",
+    "addressLocality": "Milano",
+    "postalCode": "20124",
+    "addressCountry": "IT"
+  },
+  "areaServed": [
+    {
+      "@type": "AdministrativeArea",
+      "name": "Città metropolitana di Milano"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Provincia di Monza e della Brianza"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Provincia di Como"
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/comenuova.ita/",
+    "https://www.linkedin.com/company/come-nuova"
+  ]
+}
