@@ -21,7 +21,7 @@ Nella call che hai prenotato ti chiederemo:
 - eventuale progetto dell'architetto;
 - quando prevedi di iniziare.
 
-Se nel frattempo vuoi vedere come lavoriamo, qui trovi alcuni progetti: https://www.comenuova.com/progetti
+Se nel frattempo vuoi vedere come lavoriamo, qui trovi alcuni progetti: https://www.comenuova.com/#progetti
 
 A presto,
 

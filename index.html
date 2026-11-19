@@ -198,6 +198,14 @@ input[type=text],input[type=email],input[type=tel],input[type=file],select,texta
 form.raccolta{display:grid;gap:10px}
 .form{display:grid;gap:12px;max-width:640px}
 .form label{font-weight:500}
+.consenso{display:flex;gap:10px;align-items:flex-start;font-size:.85rem;line-height:1.4;font-weight:400;color:rgba(255,255,255,.85)}
+.consenso input{width:auto;margin-top:3px;flex:none}
+.consenso a{color:#fff}
+.cookie{position:fixed;left:16px;right:16px;bottom:16px;z-index:50;max-width:720px;margin:0 auto;background:var(--petrol);color:#fff;padding:18px 20px;border-radius:8px;display:grid;gap:12px;font-size:.88rem;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.cookie a{color:#fff}
+.cookie .row{gap:10px}
+.cookie .btn{padding:10px 16px;font-size:.85rem}
+.cookie .btn.vuoto{border-color:#fff;color:#fff}
 
 
 
@@ -336,12 +344,31 @@ footer .t{color:rgba(255,255,255,.5);font-size:.8rem;text-transform:uppercase;le
     <div class="stack" style="gap:10px"><a class="logo" href="#home"><svg viewBox="182 192 484 250" style="height:38px" role="img" aria-label="come nuova"><use href="#cnlogo"/></svg></a>
       <p>General contractor per ristrutturazioni residenziali a Milano, Monza e Como.</p>
       <p class="small">Come Nuova S.r.l. · Piazza della Repubblica 28, Milano · P.IVA 13782820966</p></div>
-    <div class="stack" style="gap:6px"><span class="t">Pagine</span><a href="#privati">Ristruttura</a><a href="#come-lavoriamo">Come lavoriamo</a><a href="#progetti">Progetti</a><a href="#costi">Costi</a><a href="#architetti">Per architetti</a><a href="#contatti">Contatti</a></div>
+    <div class="stack" style="gap:6px"><span class="t">Pagine</span><a href="#privati">Ristruttura</a><a href="#come-lavoriamo">Come lavoriamo</a><a href="#progetti">Progetti</a><a href="#costi">Costi</a><a href="#architetti">Per architetti</a><a href="#contatti">Contatti</a><a href="#privacy">Privacy e cookie</a></div>
     <div class="stack" style="gap:6px"><span class="t">Contatti</span><span class="copia">+39 339 6290314</span><span class="copia">fmf@comenuova.com</span><a href="https://www.instagram.com/comenuova.ita/" target="_blank" rel="noopener">Instagram</a><a href="https://www.linkedin.com/company/come-nuova" target="_blank" rel="noopener">LinkedIn</a></div>
   </div>
 </div></footer>
 
 <script>
+/* Configurazione di lancio: compilare questi tre valori (vedi README). */
+const CONFIG={
+  SCRIPT_URL:"",   /* URL dell'app web Apps Script (finisce con /exec) */
+  CAL_URL:"",      /* link alla pagina di prenotazione di Google Calendar */
+  PIXEL_ID:""      /* ID del Meta Pixel (15-16 cifre) */
+};
+/* UTM degli ads: salvate per la sessione, inviate insieme alla richiesta */
+(function(){try{const q=new URLSearchParams(location.search),o=JSON.parse(sessionStorage.getItem("cn_utm")||"{}");["utm_source","utm_medium","utm_campaign","utm_content","fbclid"].forEach(k=>{if(q.get(k))o[k]=q.get(k).slice(0,120)});sessionStorage.setItem("cn_utm",JSON.stringify(o))}catch(e){}})();
+function utm(){try{return JSON.parse(sessionStorage.getItem("cn_utm")||"{}")}catch(e){return{}}}
+/* Cookie: il Meta Pixel parte solo dopo il consenso */
+function caricaPixel(){if(!CONFIG.PIXEL_ID||window.fbq)return;!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init",CONFIG.PIXEL_ID);fbq("track","PageView")}
+function scelta(){try{return localStorage.getItem("cn_cookie")}catch(e){return null}}
+function salvaScelta(v){try{localStorage.setItem("cn_cookie",v)}catch(e){}}
+function bannerCookie(){if(!CONFIG.PIXEL_ID)return;const c=scelta();if(c==="si"){caricaPixel();return}if(c==="no")return;
+ const b=document.createElement("div");b.className="cookie";b.setAttribute("role","dialog");b.setAttribute("aria-label","Cookie");
+ b.innerHTML='<span>Usiamo cookie di terze parti (Meta) per misurare le nostre campagne pubblicitarie, solo se acconsenti. Dettagli nell\'<a href="#privacy">informativa privacy</a>.</span><div class="row"><button class="btn" id="ck-si">Accetta</button><button class="btn vuoto" id="ck-no">Solo necessari</button></div>';
+ document.body.appendChild(b);
+ document.getElementById("ck-si").onclick=()=>{salvaScelta("si");b.remove();caricaPixel()};
+ document.getElementById("ck-no").onclick=()=>{salvaScelta("no");b.remove()}}
 const P=[
  {slug:"filippetti29",nome:"filippetti",zona:"Porta Romana",mq:90,arch:"Alessia Rubino",url:"",anno:2024,liv:"Smart",stato:"Consegnato",mesi:4,img:"img/filippetti-1.jpg",gal:["img/filippetti-2.jpg","img/filippetti-3.jpg","img/filippetti-4.jpg","img/filippetti-5.jpg"]},
  {slug:"vigano4",nome:"viganò",zona:"Porta Nuova",mq:120,arch:"Opus Atelier",url:"https://www.instagram.com/opus.atelier",anno:2025,liv:"Sartoriale",stato:"Consegnato",mesi:5,img:"img/vigano.jpg"},
@@ -568,8 +595,11 @@ function risultatoHTML(){const r=stima(),fuori=S.zona==="Altra località",piccol
    <input type="text" id="nome" placeholder="Nome e cognome" required aria-label="Nome">
    <input type="email" id="email" placeholder="Email" required aria-label="Email">
    <input type="tel" id="tel" placeholder="Telefono" required aria-label="Telefono">
+   <input type="text" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0">
+   <label class="consenso"><input type="checkbox" id="priv" required><span>Ho letto l'<a href="#privacy" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei miei dati per essere ricontattato.</span></label>
    <button class="btn" type="submit">Scegli giorno e ora</button>
-  </form><div class="avviso" id="ok" hidden>Bozza: qui si apre il calendario di Google per prenotare la call e la richiesta entra nella board come lead qualificata. Nessun dato è stato inviato.</div></div>`;
+   <div class="avviso" id="err" hidden>Non siamo riusciti a inviare la richiesta. Riprova tra un attimo oppure scrivici su <a href="https://wa.me/393396290314" target="_blank" rel="noopener">WhatsApp</a> o a <span class="copia">fmf@comenuova.com</span>.</div>
+  </form><div class="avviso" id="ok" hidden></div></div>`;
  return `<div class="risultato">${sx}${dx}</div>`;}
 function disegnaWiz(){const w=document.getElementById("wiz");if(!w)return;w.innerHTML=passoHTML();const d=DOM[S.passo];
  w.querySelectorAll("[data-v]").forEach(b=>b.addEventListener("click",()=>{S[d.k]=b.dataset.v;S.passo++;disegnaWiz();w.scrollIntoView({block:"start"})}));
@@ -579,7 +609,21 @@ function disegnaWiz(){const w=document.getElementById("wiz");if(!w)return;w.inne
  const ib=document.getElementById("ind-btn");if(ib)ib.addEventListener("click",()=>{S.passo--;disegnaWiz()});
  const rc=document.getElementById("ricomincia");if(rc)rc.addEventListener("click",()=>{S.passo=0;disegnaWiz()});
  const de=document.getElementById("desc");if(de){const dn=document.getElementById("desc-n");de.addEventListener("input",()=>{const n=de.value.trim().length;dn.textContent=n<60?`Ancora ${60-n} caratteri.`:"Perfetto, grazie."});
-  document.getElementById("lead").addEventListener("submit",e=>{e.preventDefault();e.target.hidden=true;document.getElementById("ok").hidden=false})}}
+  document.getElementById("lead").addEventListener("submit",inviaLead)}}
+async function inviaLead(e){e.preventDefault();const f=e.target,btn=f.querySelector("button[type=submit]"),err=document.getElementById("err"),ok=document.getElementById("ok");
+ if(document.getElementById("hp").value)return; /* antispam: il campo nascosto va lasciato vuoto */
+ err.hidden=true;const r=stima(),u=utm();
+ const d={nome:document.getElementById("nome").value.trim(),email:document.getElementById("email").value.trim(),telefono:document.getElementById("tel").value.trim(),indirizzo:document.getElementById("ind").value.trim(),descrizione:document.getElementById("desc").value.trim(),quando:document.getElementById("quando").value,
+  zona:S.zona,mq:S.mq,livello:S.liv,intervento:S.int,architetto:S.arc,stimaMin:Math.round(r.tot[0]),stimaMax:Math.round(r.tot[1]),consenso:document.getElementById("priv").checked,
+  utm_source:u.utm_source||"",utm_medium:u.utm_medium||"",utm_campaign:u.utm_campaign||"",utm_content:u.utm_content||""};
+ if(!CONFIG.SCRIPT_URL){f.hidden=true;ok.innerHTML="Anteprima: il modulo non è ancora collegato alla board. Nessun dato è stato inviato.";ok.hidden=false;return}
+ btn.disabled=true;btn.textContent="Invio in corso…";
+ try{const res=await fetch(CONFIG.SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)});const j=await res.json();if(!j.ok)throw new Error(j.motivo||"errore");
+  if(window.fbq)fbq("track","Lead");
+  f.hidden=true;
+  ok.innerHTML=CONFIG.CAL_URL?`<b>Richiesta ricevuta, grazie ${d.nome.split(" ")[0]}.</b><br>Ultimo passo: scegli giorno e ora per la call da 20 minuti. Ti abbiamo scritto anche una email con i prossimi passi.<br><br><a class="btn" href="${CONFIG.CAL_URL}" target="_blank" rel="noopener">Scegli giorno e ora →</a>`:`<b>Richiesta ricevuta, grazie ${d.nome.split(" ")[0]}.</b><br>Ti scriviamo entro un giorno lavorativo per fissare la call da 20 minuti.`;
+  ok.hidden=false;ok.scrollIntoView({block:"center"})
+ }catch(x){btn.disabled=false;btn.textContent="Scegli giorno e ora";err.hidden=false}}
 
 V["trova-architetto"]=()=>`
 <section><div class="w"><div class="intesta"><h1>ti presentiamo lo studio giusto</h1><p class="lead">Non hai ancora un architetto? Ti presentiamo 2 o 3 professionisti di fiducia, scelti in base alle tue esigenze, al tuo gusto e al tuo budget.</p></div>
@@ -617,6 +661,16 @@ V["guida-costi"]=()=>`
  <div class="row"><a class="btn" href="#stima">Calcola la stima per casa tua</a></div></article></div></section>`;
 
 
+V.privacy=()=>`
+<section><div class="w"><article class="articolo"><span class="small q">Bozza da far verificare da un consulente prima del lancio</span><h1>informativa privacy e cookie</h1>
+ <p class="lead">Come Nuova S.r.l. tratta i dati che ci invii attraverso il modulo del sito per rispondere alla tua richiesta.</p>
+ <h2>titolare del trattamento</h2><p>Come Nuova S.r.l., Piazza della Repubblica 28, 20124 Milano · P.IVA 13782820966 · fmf@comenuova.com</p>
+ <h2>quali dati raccogliamo</h2><p>Nome, email, telefono, indirizzo dell'immobile, descrizione dei lavori, risposte dello stimatore (zona, metri quadri, livello di finiture, presenza di un architetto) e, se arrivi da una campagna, la fonte della visita (parametri UTM).</p>
+ <h2>perché e su quale base</h2><p>Usiamo i dati per rispondere alla tua richiesta, fissare la call e preparare un'offerta (esecuzione di misure precontrattuali, art. 6.1.b GDPR). Con il tuo consenso, usiamo cookie di Meta per misurare le campagne pubblicitarie (art. 6.1.a).</p>
+ <h2>chi li riceve</h2><p>Gli strumenti che usiamo per gestirli: Google (posta, fogli di lavoro, calendario), Netlify (hosting del sito) e, solo se accetti i cookie, Meta. Non vendiamo i dati.</p>
+ <h2>per quanto tempo</h2><p>[Da confermare: es. 24 mesi dall'ultimo contatto se non nasce un incarico.]</p>
+ <h2>i tuoi diritti</h2><p>Puoi chiedere accesso, rettifica, cancellazione, limitazione e opposizione (artt. 15-22 GDPR) scrivendo a fmf@comenuova.com, e presentare reclamo al Garante per la protezione dei dati personali. Puoi revocare il consenso ai cookie cancellando i dati del sito dal browser.</p>
+ <div class="row"><a class="btn" href="#home">Torna al sito</a></div></article></div></section>`;
 
 function mostra(){const h=(location.hash||"#home").slice(1);
  const html=h.startsWith("progetto-")?V.progetto(h.slice(9)):(V[h]||V.home)();
@@ -629,7 +683,7 @@ function mostra(){const h=(location.hash||"#home").slice(1);
  document.querySelectorAll("[data-pd]").forEach(b=>b.addEventListener("click",()=>{const im=document.getElementById("pd-img");im.src=im.dataset[b.dataset.pd];im.alt=(b.dataset.pd==="prima"?"Stato di fatto ":"Planimetria di progetto ");document.querySelectorAll("[data-pd]").forEach(x=>{const on=x===b;x.setAttribute("aria-pressed",on);x.classList.toggle("vuoto",!on)})}));
  document.querySelectorAll("form.form").forEach(f=>f.addEventListener("submit",e=>{e.preventDefault();f.querySelector(".avviso").hidden=false}));
 }
-addEventListener("hashchange",mostra);mostra();
+addEventListener("hashchange",mostra);mostra();bannerCookie();
 (document.fonts?document.fonts.ready:Promise.resolve()).then(()=>{const ok=document.fonts&&document.fonts.check('500 40px "NHG Display"')&&document.fonts.check('400 16px "NHG Text"');const el=document.getElementById("font-stato");if(el)el.textContent=ok?"font Neue Haas Grotesk attivo":"font Neue Haas NON caricato: ricarica la pagina";});
 </script>
 
