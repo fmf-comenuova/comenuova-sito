@@ -16,7 +16,7 @@ grazie per averci scritto. Abbiamo ricevuto la descrizione del progetto in [indi
 
 La stima indicativa che hai visto sul sito è [forchetta]. Il prezzo vero arriva dal computo metrico, dopo il sopralluogo.
 
-Nella call che hai prenotato ti chiederemo:
+Ti scriviamo entro un giorno lavorativo per proporti una call di 20 minuti. In quell'occasione ti chiederemo:
 - planimetria attuale, se ce l'hai;
 - eventuale progetto dell'architetto;
 - quando prevedi di iniziare.

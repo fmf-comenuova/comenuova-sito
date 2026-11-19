@@ -12,7 +12,6 @@ Sito di Come Nuova S.r.l. Pubblicato su Netlify: ogni modifica al ramo `main` va
 In `index.html`, oggetto `CONFIG` (in cima allo script):
 
 - `SCRIPT_URL`: URL dell'app web Apps Script (vedi `strumenti/apps-script-lead-board.js`).
-- `CAL_URL`: link alla pagina di prenotazione di Google Calendar.
 - `PIXEL_ID`: ID del Meta Pixel. Se vuoto, banner cookie e pixel restano spenti.
 
 Al lancio: togliere `noindex` e il banner "Bozza", far verificare l'informativa `#privacy`, puntare il dominio su Netlify.

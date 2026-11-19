@@ -353,7 +353,6 @@ footer .t{color:rgba(255,255,255,.5);font-size:.8rem;text-transform:uppercase;le
 /* Configurazione di lancio: compilare questi tre valori (vedi README). */
 const CONFIG={
   SCRIPT_URL:"",   /* URL dell'app web Apps Script (finisce con /exec) */
-  CAL_URL:"",      /* link alla pagina di prenotazione di Google Calendar */
   PIXEL_ID:""      /* ID del Meta Pixel (15-16 cifre) */
 };
 /* UTM degli ads: salvate per la sessione, inviate insieme alla richiesta */
@@ -586,18 +585,18 @@ function risultatoHTML(){const r=stima(),fuori=S.zona==="Altra località",piccol
  let dx;
  if(fuori)dx=`<div class="avviso">Lavoriamo a Milano, Monza e Como con le rispettive province. Fuori da quest'area valutiamo solo progetti oltre € 300.000: scrivi a <span class="copia">fmf@comenuova.com</span> con indirizzo, metri quadri e descrizione dei lavori.</div>`;
  else if(piccolo)dx=`<div class="avviso">Per interventi sotto € 60.000 non riusciamo a garantire il nostro standard di gestione del cantiere. Ti consigliamo un'impresa locale.</div>`;
- else dx=`<div class="esito" style="position:static"><span style="font-family:var(--titoli);font-size:1.5rem;font-weight:500;letter-spacing:-.02em">parliamone in 20 minuti</span>
+ else dx=`<div class="esito" style="position:static"><span style="font-family:var(--titoli);font-size:1.5rem;font-weight:500;letter-spacing:-.02em">raccontaci il progetto</span>
   <form class="raccolta" id="lead">
    <input type="text" id="ind" placeholder="Indirizzo dell'immobile (via e comune)" required aria-label="Indirizzo">
    <textarea id="desc" rows="4" minlength="60" required aria-label="Cosa vuoi fare" placeholder="Cosa vuoi fare? Es.: ristrutturazione completa di un trilocale anni '60, nuovi impianti, due bagni, cucina aperta sul soggiorno."></textarea>
-   <span class="small q" id="desc-n">Almeno 60 caratteri: ci aiuta a prepararci alla call.</span>
+   <span class="small q" id="desc-n">Almeno 60 caratteri: ci aiuta a prepararci prima di sentirci.</span>
    <select id="quando" required aria-label="Quando iniziare"><option value="">Quando vorresti iniziare i lavori?</option><option>Entro 3 mesi</option><option>3–6 mesi</option><option>6–12 mesi</option><option>Sto ancora comprando casa</option></select>
    <input type="text" id="nome" placeholder="Nome e cognome" required aria-label="Nome">
    <input type="email" id="email" placeholder="Email" required aria-label="Email">
    <input type="tel" id="tel" placeholder="Telefono" required aria-label="Telefono">
    <input type="text" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0">
    <label class="consenso"><input type="checkbox" id="priv" required><span>Ho letto l'<a href="#privacy" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei miei dati per essere ricontattato.</span></label>
-   <button class="btn" type="submit">Scegli giorno e ora</button>
+   <button class="btn" type="submit">Invia la richiesta</button>
    <div class="avviso" id="err" hidden>Non siamo riusciti a inviare la richiesta. Riprova tra un attimo oppure scrivici su <a href="https://wa.me/393396290314" target="_blank" rel="noopener">WhatsApp</a> o a <span class="copia">fmf@comenuova.com</span>.</div>
   </form><div class="avviso" id="ok" hidden></div></div>`;
  return `<div class="risultato">${sx}${dx}</div>`;}
@@ -621,9 +620,9 @@ async function inviaLead(e){e.preventDefault();const f=e.target,btn=f.querySelec
  try{const res=await fetch(CONFIG.SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)});const j=await res.json();if(!j.ok)throw new Error(j.motivo||"errore");
   if(window.fbq)fbq("track","Lead");
   f.hidden=true;
-  ok.innerHTML=CONFIG.CAL_URL?`<b>Richiesta ricevuta, grazie ${d.nome.split(" ")[0]}.</b><br>Ultimo passo: scegli giorno e ora per la call da 20 minuti. Ti abbiamo scritto anche una email con i prossimi passi.<br><br><a class="btn" href="${CONFIG.CAL_URL}" target="_blank" rel="noopener">Scegli giorno e ora →</a>`:`<b>Richiesta ricevuta, grazie ${d.nome.split(" ")[0]}.</b><br>Ti scriviamo entro un giorno lavorativo per fissare la call da 20 minuti.`;
+  ok.innerHTML=`<b>Richiesta ricevuta, grazie ${d.nome.split(" ")[0]}.</b><br>Leggiamo con calma i dettagli e ti scriviamo entro un giorno lavorativo per proporti una call di 20 minuti. Ti abbiamo mandato anche una email di conferma.`;
   ok.hidden=false;ok.scrollIntoView({block:"center"})
- }catch(x){btn.disabled=false;btn.textContent="Scegli giorno e ora";err.hidden=false}}
+ }catch(x){btn.disabled=false;btn.textContent="Invia la richiesta";err.hidden=false}}
 
 V["trova-architetto"]=()=>`
 <section><div class="w"><div class="intesta"><h1>ti presentiamo lo studio giusto</h1><p class="lead">Non hai ancora un architetto? Ti presentiamo 2 o 3 professionisti di fiducia, scelti in base alle tue esigenze, al tuo gusto e al tuo budget.</p></div>

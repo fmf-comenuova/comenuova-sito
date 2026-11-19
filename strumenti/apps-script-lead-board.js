@@ -6,10 +6,9 @@
  * 1. Apri la board → Estensioni → Apps Script → incolla questo file (sostituisci tutto).
  * 2. Nella tab Leads aggiungi due colonne in fondo all'intestazione (riga 6): "Email" e "Phone"
  *    (a destra dell'ultima colonna). Senza, email e telefono arrivano solo per mail.
- * 3. Compila CAL_URL qui sotto con il link alla pagina di prenotazione di Google Calendar.
- * 4. Distribuisci → Nuovo deployment → App web → Esegui come: te; Accesso: chiunque.
+ * 3. Distribuisci → Nuovo deployment → App web → Esegui come: te; Accesso: chiunque.
  *    Autorizza i permessi quando richiesto (fogli, invio email).
- * 5. Copia l'URL dell'app web (finisce con /exec) e mandalo a Claude: lo collega al form del sito.
+ * 4. Copia l'URL dell'app web (finisce con /exec) e mandalo a Claude: lo collega al form del sito.
  *
  * Dopo ogni modifica a questo file: Distribuisci → Gestisci deployment → modifica → Nuova versione.
  * Le colonne seguono l'intestazione della tab Leads (riga 6). Il sito invia solo richieste già
@@ -19,7 +18,6 @@ const FOGLIO = 'Leads';
 const RIGA_INTESTAZIONE = 6;
 const ZONE_OK = ['Milano – centro e semicentro', 'Milano – resto della città', 'Provincia di Milano', 'Monza e Brianza', 'Como e provincia'];
 const SOGLIA_MINIMA = 60000;
-const CAL_URL = ''; // link prenotazione Google Calendar (stesso del sito)
 const EMAIL_FRANCESCO = 'fmf@comenuova.com';
 
 function doPost(e) {
@@ -79,7 +77,6 @@ function doPost(e) {
     body: `${d.nome} · ${d.email} · ${d.telefono}\n${d.indirizzo}\nInizio: ${d.quando}\nStima mostrata: ${forchetta}\nFonte: ${d.utm_source || 'sito'} ${d.utm_campaign || ''}\n\n${d.descrizione}`
   });
 
-  const prenota = CAL_URL ? `Se non hai ancora scelto giorno e ora per la call, puoi farlo qui:\n${CAL_URL}\n\n` : '';
   MailApp.sendEmail({
     to: d.email,
     replyTo: EMAIL_FRANCESCO,
@@ -94,7 +91,7 @@ grazie per averci scritto. Abbiamo ricevuto la descrizione del progetto in ${d.i
 
 La stima indicativa che hai visto sul sito è ${forchetta}. Il prezzo vero arriva dal computo metrico, dopo il sopralluogo.
 
-${prenota}Nella call ti chiederemo:
+Ti scriviamo entro un giorno lavorativo per proporti una call di 20 minuti. In quell'occasione ti chiederemo:
 - planimetria attuale, se ce l'hai;
 - eventuale progetto dell'architetto;
 - quando prevedi di iniziare.
